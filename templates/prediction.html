@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Resultado | CONAUTI</title>
+<style>body{font-family:Arial;background:#f3f6fb;color:#172033;margin:0;padding:25px}.card{max-width:720px;margin:40px auto;background:white;padding:28px;border-radius:14px;border:1px solid #e2e8f0}h1{color:#173b63}.result{font-size:25px;font-weight:bold;padding:16px;background:#eef4fa;border-radius:8px}a{display:inline-block;margin-top:20px;color:#1769aa}</style></head>
+<body><main class="card"><h1>Resultado del análisis</h1>
+<div class="result">{{ 'Comportamiento anómalo' if prediction == 1 else 'Comportamiento normal' }}</div>
+<p>Probabilidad estimada de anomalía: <strong>{{ '%.2f'|format(probability*100) }}%</strong></p>
+<h3>Datos evaluados</h3><ul>{% for key,value in values.items() %}<li>{{ key }}: {{ value }}</li>{% endfor %}</ul>
+<a href="/">Volver al panel</a></main></body></html>
