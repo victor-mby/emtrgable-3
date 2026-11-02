@@ -1,28 +1,18 @@
-"""Punto de entrada del proyecto CONAUTI."""
-
-import json
-
+"""Punto de entrada: entrena los modelos y levanta el panel web."""
+import argparse
 from src.pipeline import run_pipeline
 
-
 def main():
-    print("=" * 66)
-    print("CONAUTI S.A.C. | DETECCIÓN DE ANOMALÍAS EN AGENTES DE IA")
-    print("=" * 66)
-    print("Ejecutando generación de datos y entrenamiento de modelos...")
-
+    parser = argparse.ArgumentParser(description="Sistema CONAUTI")
+    parser.add_argument("--solo-entrenar", action="store_true", help="Entrena y termina sin iniciar el panel")
+    args = parser.parse_args()
+    print("CONAUTI | DETECCIÓN DE ANOMALÍAS EN AGENTES DE IA")
     report = run_pipeline()
-
-    print("\nProceso finalizado.")
-    print(f"Registros: {report['registros']}")
-    print(f"Normales: {report['normales']}")
-    print(f"Anómalos: {report['anomalias']}")
-    print(f"Grupos K-Means: {report['kmeans_grupos']}")
-    print(f"Atípicos Isolation Forest: {report['isolation_forest_atipicos']}")
-    print("\nMétricas MLP:")
-    print(json.dumps(report["mlp"], ensure_ascii=False, indent=2))
-    print("\nArchivos generados en las carpetas data/, models/ y outputs/.")
-
+    print(f"Datos: {report['registros']} | normales: {report['normales']} | anomalías: {report['anomalias']}")
+    print(f"MLP accuracy: {report['mlp']['accuracy']:.3f} | F1: {report['mlp']['f1_score']:.3f}")
+    if not args.solo_entrenar:
+        from app import app
+        app.run(host="127.0.0.1", port=5000, debug=False)
 
 if __name__ == "__main__":
     main()
