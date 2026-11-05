@@ -1,47 +1,36 @@
-# CONAUTI S.A.C. — Detección de anomalías en agentes de IA
+# CONAUTI S.A.C. — Entregable final
 
-Aplicación académica que genera 250 interacciones sintéticas y aplica K-Means, Isolation Forest y una red neuronal MLP con TensorFlow. Incluye un panel web para consultar resultados y evaluar nuevas interacciones.
+Sistema académico para analizar anomalías en interacciones de agentes de inteligencia artificial.
 
-## Requisitos
-Python 3.10–3.12 recomendado. TensorFlow debe instalarse en una versión compatible con tu Python.
+## Modelos implementados
 
-## Instalación (Windows)
-```powershell
-py -3.11 -m venv .venv
-.venv\Scripts\activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-```
+1. Supervisado: Árbol de Decisión.
+2. No supervisado: K-Means.
+3. No supervisado: DBSCAN.
+4. Deep Learning: MLP con TensorFlow/Keras.
+5. Deep Learning: Autoencoder con TensorFlow/Keras.
+6. Visión Computacional: CNN con TensorFlow/Keras.
+
+## Datos
+
+Se generan 250 registros sintéticos: 200 normales y 50 anómalos.
 
 ## Ejecución
-```powershell
+
+Desde la carpeta extraída del ZIP:
+
+py -3.11 -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
 python main.py
-```
-Abre http://127.0.0.1:5000. El primer inicio genera los datos, entrena los modelos y luego levanta el panel.
 
-Para entrenar sin abrir el panel:
-```powershell
+Para entrenar sin abrir Flask:
 python main.py --solo-entrenar
-```
 
-## Variables predictoras
-Longitud_Solicitud, Tiempo_Respuesta_ms, Herramientas_Utilizadas, Numero_Intentos, Tokens_Consumidos, Errores_Ejecucion, Reintentos_API y Uso_CPU_Porcentaje.
+El panel queda disponible en http://127.0.0.1:5000.
 
-Objetivo: Anomalia (0 = normal, 1 = anómala). Metadatos: ID_Interaccion, ID_Agente y Fecha_Hora; no se usan como entradas predictoras.
+## Visión computacional
 
-## Modelos
-- K-Means: agrupa interacciones similares para explorar patrones.
-- Isolation Forest: detecta registros atípicos sin utilizar la etiqueta objetivo durante el ajuste.
-- MLP TensorFlow: aprende con las ocho variables y la etiqueta Anomalia para clasificar nuevas interacciones.
+La CNN recibe una imagen sintética de 16x16 generada a partir de las ocho variables normalizadas. Esta representación permite aplicar una arquitectura de convolución al comportamiento de cada interacción sin inventar fotografías reales de una operación que no existe en los datos disponibles.
 
-## Estructura
-- app.py y templates/: panel web.
-- main.py: ejecución del flujo.
-- config.py: variables y rutas.
-- src/: generación, preprocesamiento y modelos.
-- tests/: pruebas del generador.
-- data/: conjunto sintético.
-- models/: modelos entrenados.
-- outputs/: predicciones y métricas.
-
-Los datos son simulados para fines académicos; no son mediciones reales de CONAUTI S.A.C.
+Los resultados son académicos y se basan en datos sintéticos.
