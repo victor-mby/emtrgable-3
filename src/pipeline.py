@@ -9,7 +9,6 @@ from config import DATA_PATH, DATA_DIR, MODELS_DIR, OUTPUTS_DIR, FEATURES, TARGE
 from src.data_generator import generate_dataset, validate_dataset
 from src.preprocessing import split_and_scale
 from src.clustering import fit_kmeans
-from src.anomaly_detection import fit_isolation_forest
 from src.decision_tree import train_and_evaluate as train_tree
 from src.dbscan import fit_dbscan
 from src.neural_network import train_and_evaluate as train_mlp
