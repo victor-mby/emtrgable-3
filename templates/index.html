@@ -6,47 +6,40 @@
 <title>CONAUTI | Panel de anomalías</title>
 <style>
 :root{font-family:Arial,sans-serif;color:#172033;background:#f3f6fb}
-*{box-sizing:border-box}
-body{margin:0}
-.wrap{max-width:1120px;margin:auto;padding:28px 18px}
-.hero{background:#173b63;color:white;padding:28px;border-radius:16px}
-.hero h1{margin:0 0 8px}
-.muted{color:#64748b}
-.hero .muted{color:#d5e2f0}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1160px;margin:auto;padding:28px 18px}
+.hero{background:#173b63;color:white;padding:28px;border-radius:16px}.hero h1{margin:0 0 8px}
+.muted{color:#64748b}.hero .muted{color:#d5e2f0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:20px 0}
 .card{background:white;border:1px solid #e2e8f0;border-radius:12px;padding:18px}
-.value{font-size:28px;font-weight:bold;margin-top:8px}
-.section{margin-top:26px}
-h2{font-size:20px}
-h3{font-size:16px;margin:0 0 8px}
-.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.value{font-size:28px;font-weight:bold;margin-top:8px}.section{margin-top:26px}h2{font-size:20px}
+h3{font-size:17px;margin:0 0 8px}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
 label{display:block;font-size:13px;font-weight:bold;margin-bottom:6px}
 input{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px}
 button{margin-top:16px;padding:12px 18px;background:#1769aa;color:white;border:0;border-radius:8px;font-weight:bold;cursor:pointer}
 table{width:100%;border-collapse:collapse;background:white;font-size:13px}
-th,td{padding:10px;text-align:left;border-bottom:1px solid #e2e8f0}
-th{background:#eaf0f7}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #e2e8f0}th{background:#eaf0f7}
 .alert{background:#fff1f2;padding:12px;border-radius:8px;color:#9f1239}
-.model-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:16px}
-.model-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px}
-.model-meta{font-size:13px;color:#64748b;margin-top:5px}
-.metric-line{margin-top:8px;font-size:14px;line-height:1.6}
-.status{display:inline-block;padding:4px 8px;border-radius:6px;background:#eaf4ff;color:#17518a;font-size:12px;font-weight:bold;margin-top:8px}
-@media(max-width:600px){.wrap{padding:14px}.hero{padding:20px}}
+.model-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px;margin-top:16px}
+.model-card{background:white;border:1px solid #dbe4ef;border-radius:14px;padding:20px}
+.model-meta{font-size:13px;color:#64748b;margin-bottom:12px}
+.step{background:#f8fafc;border-left:4px solid #1769aa;padding:10px 12px;margin:9px 0;font-size:14px;line-height:1.5}
+.result{margin-top:12px;padding:11px;background:#eef6ff;border-radius:8px;font-size:14px;line-height:1.55}
+.badge{display:inline-block;padding:4px 8px;border-radius:6px;background:#eaf4ff;color:#17518a;font-size:12px;font-weight:bold}
+.purpose{margin-top:10px;font-size:14px;line-height:1.5}
+@media(max-width:600px){.wrap{padding:14px}.hero{padding:20px}.model-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <main class="wrap">
+
 <header class="hero">
 <h1>CONAUTI S.A.C.</h1>
 <div>Detección de anomalías en interacciones de agentes de inteligencia artificial</div>
-<p class="muted">Panel de seguimiento y clasificación de interacciones</p>
+<p class="muted">Panel de seguimiento, aplicación y resultados de los 6 modelos de inteligencia artificial</p>
 </header>
 
 {% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}<p class="alert">{{ message }}</p>{% endfor %}
-{% endif %}
+{% if messages %}{% for message in messages %}<p class="alert">{{ message }}</p>{% endfor %}{% endif %}
 {% endwith %}
 
 {% set models = metrics.get('modelos', {}) %}
@@ -59,91 +52,83 @@ th{background:#eaf0f7}
 
 <section class="grid">
 <div class="card"><div class="muted">Interacciones analizadas</div><div class="value">{{ metrics.get('registros','—') }}</div></div>
-<div class="card"><div class="muted">Comportamientos normales</div><div class="value">{{ metrics.get('normales','—') }}</div></div>
+<div class="card"><div class="muted">Normales</div><div class="value">{{ metrics.get('normales','—') }}</div></div>
 <div class="card"><div class="muted">Anomalías simuladas</div><div class="value">{{ metrics.get('anomalias','—') }}</div></div>
-<div class="card"><div class="muted">Grupos K-Means</div><div class="value">{{ kmeans.get('grupos','—') }}</div></div>
+<div class="card"><div class="muted">Modelos aplicados</div><div class="value">6</div></div>
 </section>
 
 <section class="section">
-<h2>Resultados de los seis modelos</h2>
-<p class="muted">Métricas calculadas durante la última ejecución del entrenamiento.</p>
+<h2>¿Cómo se aplicó cada modelo?</h2>
+<p class="muted">Esta sección muestra qué datos recibe cada modelo, qué proceso realiza, qué resultado produce y por qué se utilizó en el caso de CONAUTI.</p>
+
 <div class="model-grid">
 
 <article class="model-card">
 <h3>1. Árbol de Decisión</h3>
-<div class="model-meta">Aprendizaje supervisado · Scikit-learn</div>
-{% if tree %}
-<div class="metric-line">
-Accuracy: <strong>{{ '%.1f'|format(tree.get('accuracy',0)*100) }}%</strong><br>
-Precisión: <strong>{{ '%.1f'|format(tree.get('precision',0)*100) }}%</strong><br>
-Recall: <strong>{{ '%.1f'|format(tree.get('recall',0)*100) }}%</strong><br>
-F1-score: <strong>{{ '%.1f'|format(tree.get('f1_score',0)*100) }}%</strong>
-</div>
-<span class="status">Entrenado</span>
-{% else %}<p class="muted">Sin métricas disponibles.</p>{% endif %}
+<div class="model-meta">Supervisado · Scikit-learn · Clasificación</div>
+<div class="step"><strong>Entrada:</strong> las 8 variables de cada interacción: longitud de solicitud, tiempo de respuesta, herramientas, intentos, tokens, errores, reintentos API y uso de CPU.</div>
+<div class="step"><strong>Cómo funciona:</strong> aprende reglas a partir de ejemplos con etiqueta <strong>Anomalia</strong> (0 normal / 1 anómala) y divide los datos mediante condiciones hasta decidir la clase.</div>
+<div class="step"><strong>Aplicación:</strong> se entrena con los datos de entrenamiento y después clasifica las interacciones del conjunto de prueba.</div>
+<div class="purpose"><strong>¿Para qué se aplicó?</strong> Para tener un modelo supervisado, interpretable y fácil de explicar que permita decidir si una interacción es normal o anómala.</div>
+{% if tree %}<div class="result"><strong>Resultado:</strong> Accuracy {{ '%.1f'|format(tree.get('accuracy',0)*100) }}% · F1 {{ '%.1f'|format(tree.get('f1_score',0)*100) }}%</div>{% endif %}
 </article>
 
 <article class="model-card">
 <h3>2. K-Means</h3>
-<div class="model-meta">Aprendizaje no supervisado · Scikit-learn</div>
-<div class="metric-line">Grupos identificados: <strong>{{ kmeans.get('grupos','—') }}</strong></div>
-{% if kmeans %}<span class="status">Entrenado</span>{% else %}<p class="muted">Sin resultados disponibles.</p>{% endif %}
+<div class="model-meta">No supervisado · Scikit-learn · Agrupamiento</div>
+<div class="step"><strong>Entrada:</strong> las 8 variables estandarizadas de las 250 interacciones, sin usar la etiqueta de anomalía.</div>
+<div class="step"><strong>Cómo funciona:</strong> busca puntos similares y los organiza alrededor de centros llamados centroides. En este proyecto se configuraron <strong>4 grupos</strong>.</div>
+<div class="step"><strong>Aplicación:</strong> cada interacción recibe una etiqueta de grupo y el resultado se guarda como <strong>Grupo_KMeans</strong>.</div>
+<div class="purpose"><strong>¿Para qué se aplicó?</strong> Para descubrir perfiles de comportamiento entre las interacciones y observar si existen patrones diferenciados sin depender de una etiqueta previa.</div>
+{% if kmeans %}<div class="result"><strong>Resultado:</strong> {{ kmeans.get('grupos','—') }} grupos encontrados.</div>{% endif %}
 </article>
 
 <article class="model-card">
 <h3>3. DBSCAN</h3>
-<div class="model-meta">Aprendizaje no supervisado · Scikit-learn</div>
-<div class="metric-line">
-Grupos identificados: <strong>{{ dbscan.get('grupos','—') }}</strong><br>
-Registros marcados como ruido: <strong>{{ dbscan.get('ruido','—') }}</strong>
-</div>
-{% if dbscan %}<span class="status">Entrenado</span>{% else %}<p class="muted">Sin resultados disponibles.</p>{% endif %}
+<div class="model-meta">No supervisado · Scikit-learn · Agrupamiento por densidad</div>
+<div class="step"><strong>Entrada:</strong> las mismas 8 variables estandarizadas utilizadas para analizar la similitud entre interacciones.</div>
+<div class="step"><strong>Cómo funciona:</strong> busca zonas donde existen suficientes puntos cercanos. Los puntos que no pertenecen a una zona suficientemente densa se marcan como <strong>ruido (-1)</strong>.</div>
+<div class="step"><strong>Aplicación:</strong> se ejecuta sobre todas las interacciones y se guardan el grupo y los casos considerados ruido como <strong>Grupo_DBSCAN</strong>.</div>
+<div class="purpose"><strong>¿Para qué se aplicó?</strong> Para detectar comportamientos aislados que podrían ser útiles como señales de posibles anomalías, complementando el análisis de K-Means.</div>
+{% if dbscan %}<div class="result"><strong>Resultado:</strong> {{ dbscan.get('grupos','—') }} grupos y {{ dbscan.get('ruido','—') }} registros marcados como ruido.</div>{% endif %}
 </article>
 
 <article class="model-card">
 <h3>4. MLP</h3>
-<div class="model-meta">Red neuronal multicapa · TensorFlow/Keras</div>
-{% if mlp %}
-<div class="metric-line">
-Accuracy: <strong>{{ '%.1f'|format(mlp.get('accuracy',0)*100) }}%</strong><br>
-Precisión: <strong>{{ '%.1f'|format(mlp.get('precision',0)*100) }}%</strong><br>
-Recall: <strong>{{ '%.1f'|format(mlp.get('recall',0)*100) }}%</strong><br>
-F1-score: <strong>{{ '%.1f'|format(mlp.get('f1_score',0)*100) }}%</strong>
-</div>
-<span class="status">Entrenado</span>
-{% else %}<p class="muted">Sin métricas disponibles.</p>{% endif %}
+<div class="model-meta">Deep Learning · TensorFlow/Keras · Clasificación binaria</div>
+<div class="step"><strong>Entrada:</strong> las 8 variables estandarizadas de una interacción.</div>
+<div class="step"><strong>Cómo funciona:</strong> una red con capas Dense de 32 y 16 neuronas aprende relaciones entre las variables. La salida Sigmoid genera una probabilidad de anomalía.</div>
+<div class="step"><strong>Aplicación:</strong> se entrena con ejemplos etiquetados. Si la probabilidad obtenida es ≥ 0.5, se clasifica como anomalía.</div>
+<div class="purpose"><strong>¿Para qué se aplicó?</strong> Para comparar una red neuronal con el Árbol de Decisión y disponer de un clasificador capaz de aprender relaciones no lineales entre las variables.</div>
+{% if mlp %}<div class="result"><strong>Resultado:</strong> Accuracy {{ '%.1f'|format(mlp.get('accuracy',0)*100) }}% · F1 {{ '%.1f'|format(mlp.get('f1_score',0)*100) }}%</div>{% endif %}
 </article>
 
 <article class="model-card">
 <h3>5. Autoencoder</h3>
-<div class="model-meta">Detección de anomalías · TensorFlow/Keras</div>
-<div class="metric-line">
-Umbral de reconstrucción: <strong>{{ '%.4f'|format(autoencoder.get('threshold',0)) if autoencoder else '—' }}</strong><br>
-Anomalías detectadas: <strong>{{ autoencoder.get('anomalias_detectadas','—') }}</strong>
-</div>
-{% if autoencoder %}<span class="status">Entrenado</span>{% else %}<p class="muted">Sin resultados disponibles.</p>{% endif %}
+<div class="model-meta">Deep Learning · TensorFlow/Keras · Detección de anomalías</div>
+<div class="step"><strong>Entrada:</strong> las 8 variables estandarizadas, pero el entrenamiento utiliza únicamente las interacciones normales.</div>
+<div class="step"><strong>Cómo funciona:</strong> aprende a reconstruir el comportamiento normal. Después calcula el error entre los valores originales y reconstruidos.</div>
+<div class="step"><strong>Aplicación:</strong> se establece un umbral con el percentil 95 del error de reconstrucción de los datos normales. Si una interacción supera ese umbral, se marca como anómala.</div>
+<div class="purpose"><strong>¿Para qué se aplicó?</strong> Para detectar comportamientos que se alejan del patrón normal sin necesitar entrenar directamente con ejemplos de anomalías.</div>
+{% if autoencoder %}<div class="result"><strong>Resultado:</strong> umbral {{ '%.4f'|format(autoencoder.get('threshold',0)) }} · {{ autoencoder.get('anomalias_detectadas','—') }} anomalías detectadas.</div>{% endif %}
 </article>
 
 <article class="model-card">
 <h3>6. CNN</h3>
-<div class="model-meta">Red neuronal convolucional · TensorFlow/Keras</div>
-{% if cnn %}
-<div class="metric-line">
-Accuracy: <strong>{{ '%.1f'|format(cnn.get('accuracy',0)*100) }}%</strong><br>
-Precisión: <strong>{{ '%.1f'|format(cnn.get('precision',0)*100) }}%</strong><br>
-Recall: <strong>{{ '%.1f'|format(cnn.get('recall',0)*100) }}%</strong><br>
-F1-score: <strong>{{ '%.1f'|format(cnn.get('f1_score',0)*100) }}%</strong>
-</div>
-<span class="status">Entrenado</span>
-{% else %}<p class="muted">Sin métricas disponibles.</p>{% endif %}
+<div class="model-meta">Visión Computacional · TensorFlow/Keras · Clasificación</div>
+<div class="step"><strong>Entrada:</strong> las 8 variables estandarizadas se transforman en una representación matricial de <strong>16×16 píxeles</strong> para poder utilizar una CNN.</div>
+<div class="step"><strong>Cómo funciona:</strong> las capas convolucionales extraen patrones de la representación 16×16; luego las capas finales clasifican la interacción como normal o anómala.</div>
+<div class="step"><strong>Aplicación:</strong> se generan imágenes sintéticas a partir de las variables, se entrena la CNN con las etiquetas 0/1 y se obtiene una probabilidad de anomalía.</div>
+<div class="purpose"><strong>¿Para qué se aplicó?</strong> Para incorporar el enfoque de visión computacional solicitado en la pauta y comprobar cómo una CNN puede trabajar sobre una representación visual de los datos de interacción.</div>
+{% if cnn %}<div class="result"><strong>Resultado:</strong> Accuracy {{ '%.1f'|format(cnn.get('accuracy',0)*100) }}% · F1 {{ '%.1f'|format(cnn.get('f1_score',0)*100) }}%</div>{% endif %}
 </article>
 
 </div>
 </section>
 
 <section class="card section">
-<h2>Evaluar una nueva interacción</h2>
-<p class="muted">Ingresa los valores de las ocho variables para obtener una clasificación con la red neuronal MLP.</p>
+<h2>Evaluar una nueva interacción con MLP</h2>
+<p class="muted">Ingresa las ocho variables para que la red neuronal MLP calcule la probabilidad de anomalía.</p>
 <form action="{{ url_for('predict') }}" method="post">
 <div class="formgrid">
 {% for name in features %}
@@ -162,11 +147,11 @@ F1-score: <strong>{{ '%.1f'|format(cnn.get('f1_score',0)*100) }}%</strong>
 {% if recent %}
 <div style="overflow-x:auto">
 <table>
-<thead>
-<tr>
-<th>ID</th><th>Agente</th><th>Tiempo (ms)</th><th>Tokens</th><th>Errores</th><th>Anomalía real</th><th>Grupo K-Means</th><th>Grupo DBSCAN</th><th>Error Autoencoder</th><th>Alerta Autoencoder</th>
-</tr>
-</thead>
+<thead><tr>
+<th>ID</th><th>Agente</th><th>Tiempo (ms)</th><th>Tokens</th><th>Errores</th>
+<th>Anomalía real</th><th>Grupo K-Means</th><th>Grupo DBSCAN</th>
+<th>Error Autoencoder</th><th>Alerta Autoencoder</th>
+</tr></thead>
 <tbody>
 {% for row in recent %}
 <tr>
@@ -185,9 +170,7 @@ F1-score: <strong>{{ '%.1f'|format(cnn.get('f1_score',0)*100) }}%</strong>
 </tbody>
 </table>
 </div>
-{% else %}
-<p class="muted">No hay registros disponibles.</p>
-{% endif %}
+{% else %}<p class="muted">No hay registros disponibles.</p>{% endif %}
 </section>
 
 <p class="muted section">Proyecto académico con datos sintéticos. Los resultados no representan telemetría real de CONAUTI S.A.C.</p>
